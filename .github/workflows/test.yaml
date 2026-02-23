@@ -34,5 +34,8 @@ jobs:
           composer require "laravel/framework:${{ env.LARAVEL }}" "orchestra/testbench:${{ env.TEST_BENCH }}" "nunomaduro/collision:${{ env.COLLISION }}" --dev --no-interaction --no-update --ansi
           composer update --prefer-stable --prefer-dist --no-interaction --ansi
 
+      - name: Audit
+        run: composer audit
+
       - name: Execute tests
         run: composer test
