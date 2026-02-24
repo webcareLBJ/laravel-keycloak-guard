@@ -1,15 +1,17 @@
 {
-    "name": "robsontenorio/laravel-keycloak-guard",
+    "name": "pflege-de/laravel-keycloak-guard",
     "description": "🔑 Simple Keycloak Guard for Laravel",
     "keywords": [
         "laravel",
         "keycloak"
     ],
-    "homepage": "https://github.com/robsontenorio/laravel-keycloak-guard",
+    "homepage": "https://github.com/webcarelbj/laravel-keycloak-guard",
     "license": "MIT",
     "authors": [
         {
-            "name": "Robson Tenório"
+            "name": "web care LBJ GmbH",
+            "homepage": "https://pflege.de/",
+            "role": "Maintainer"
         }
     ],
     "minimum-stability": "dev",
