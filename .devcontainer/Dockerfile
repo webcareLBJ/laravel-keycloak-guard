@@ -1,3 +1,3 @@
-FROM robsontenorio/laravel
+FROM robsontenorio/laravel@sha256:b75ae071c8a2028ad6bc52bd446f1111c362a7ac29ef9b8de026f1f3d3529304
 
 
