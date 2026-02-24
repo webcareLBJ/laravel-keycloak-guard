@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="bird.png">
+  <img src=".github/assets/bird.png">
 </p>
 <p align="center">
 &nbsp;
@@ -32,7 +32,7 @@ This package helps you authenticate users on a Laravel API based on JWT tokens g
 # The flow
 
 <p align="center">
-  <img src="flow.png">
+  <img src=".github/assets/flow.png">
 </p>
 
 1. The frontend user authenticates on Keycloak Server
