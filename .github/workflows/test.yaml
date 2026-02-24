@@ -8,14 +8,14 @@ on:
 
 jobs:
   build-and-test:
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} 
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
         php: [8.2, 8.3, 8.4, 8.5]
-        laravel: [11.*, 12.*]       
-        stability: [prefer-lowest, prefer-stable]               
-        include: 
+        laravel: [11.*, 12.*]
+        stability: [prefer-lowest, prefer-stable]
+        include:
           - laravel: 11.*
             testbench: 9.*
             collision: 8.*
@@ -25,16 +25,10 @@ jobs:
         exclude:
           - php: 8.5
             laravel: 11.*
-                      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-composer-${{ hashFiles('composer.json') }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@44454db4f0199b8b9685a5d763dc37cbf79108e1 # v2
@@ -42,16 +36,24 @@ jobs:
           php-version: ${{ matrix.php }}
           # extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath
 
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ matrix.php }}-${{ matrix.laravel }}-${{ matrix.stability }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ matrix.php }}-${{ matrix.laravel }}-${{ matrix.stability }}-
+            ${{ matrix.php }}-${{ matrix.laravel }}-
+            ${{ matrix.php }}-
+
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nunomaduro/collision:${{ matrix.collision }}" --dev --no-interaction --no-update --ansi
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction --ansi
 
       - name: Execute tests
-        run: composer test:coverage
-
-      - name: Cache dependencies
-        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5
-        with:
-          path: ~/.composer/cache/files
-          key: dependencies-composer-${{ hashFiles('composer.json') }}
+        run: composer test
