@@ -15,6 +15,7 @@ use KeycloakGuard\Tests\Extensions\CustomUserProvider;
 use KeycloakGuard\Tests\Factories\UserFactory;
 use KeycloakGuard\Tests\Models\User;
 use KeycloakGuard\Token;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AuthenticateTest extends TestCase
 {
@@ -435,11 +436,7 @@ class AuthenticateTest extends TestCase
         $this->assertNotNull($token->exp);
     }
 
-    /**
-     * @dataProvider scopeProvider
-     *
-     * @return void
-     */
+    #[DataProvider('scopeProvider')]
     public function test_acting_as_keycloak_user_trait_with_custom_payload(string $scope)
     {
         UserFactory::new()->create([
@@ -498,7 +495,7 @@ class AuthenticateTest extends TestCase
         $this->assertEquals($this->user->username, Auth::user()->username);
     }
 
-    public function scopeProvider(): array
+    public static function scopeProvider(): array
     {
         return [
             ['local'],
