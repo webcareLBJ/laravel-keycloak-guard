@@ -2,6 +2,7 @@
     "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
     "include-v-in-tag": true,
     "plugins": ["sentence-case"],
+    "bootstrap-sha": "6a2f40813a80d7343b24979e0797562d8c2618d7",
     "always-update": true,
     "changelog-sections": [
         { "type": "feat", "section": "Features", "hidden": false },
