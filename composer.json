@@ -34,6 +34,9 @@
         }
     },
     "scripts": {
+        "lint": "pint",
+        "lint:check": "pint --test",
+        "lint:fix": "pint --repair",
         "test": "pest",
         "test:coverage": "php -d pcov.enabled=1 ./vendor/bin/pest --coverage --coverage-clover=.coverage/clover.xml --coverage-html=.coverage",
         "post-autoload-dump": [
@@ -48,11 +51,10 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.0",
-        "orchestra/testbench": "^9.0",
-        "friendsofphp/php-cs-fixer": "^3.10",
-        "nunomaduro/collision": "^8.0",
-        "pestphp/pest": "^3.0"
+        "orchestra/testbench": "^9.16",
+        "nunomaduro/collision": "^8.9",
+        "pestphp/pest": "^3.8",
+        "laravel/pint": "^1.27"
     },
     "config": {
         "allow-plugins": {

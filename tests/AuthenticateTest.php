@@ -2,7 +2,6 @@
 
 namespace KeycloakGuard\Tests;
 
-use Firebase\JWT\JWT;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Hashing\BcryptHasher;
 use Illuminate\Support\Facades\Auth;
@@ -80,7 +79,7 @@ class AuthenticateTest extends TestCase
         $this->expectException(UserNotFoundException::class);
 
         $this->buildCustomToken([
-            'preferred_username' => 'mary'
+            'preferred_username' => 'mary',
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -129,7 +128,7 @@ class AuthenticateTest extends TestCase
         $this->expectException(ResourceAccessNotAllowedException::class);
 
         $this->buildCustomToken([
-            'resource_access' => ['some_resouce_not_allowed' => []]
+            'resource_access' => ['some_resouce_not_allowed' => []],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -140,7 +139,7 @@ class AuthenticateTest extends TestCase
         config(['keycloak.ignore_resources_validation' => true]);
 
         $this->buildCustomToken([
-            'resource_access' => ['some_resouce_not_allowed' => []]
+            'resource_access' => ['some_resouce_not_allowed' => []],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -155,16 +154,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -178,16 +177,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -201,16 +200,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -224,16 +223,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -247,16 +246,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -270,16 +269,16 @@ class AuthenticateTest extends TestCase
                 'myapp-backend' => [
                     'roles' => [
                         'myapp-backend-role1',
-                        'myapp-backend-role2'
-                    ]
+                        'myapp-backend-role2',
+                    ],
                 ],
                 'myapp-frontend' => [
                     'roles' => [
                         'myapp-frontend-role1',
-                        'myapp-frontend-role2'
-                    ]
-                ]
-            ]
+                        'myapp-frontend-role2',
+                    ],
+                ],
+            ],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -334,7 +333,7 @@ class AuthenticateTest extends TestCase
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
 
-        $expectedValues = ["scope-a", "scope-b", "scope-c"];
+        $expectedValues = ['scope-a', 'scope-b', 'scope-c'];
         foreach ($expectedValues as $value) {
             $this->assertContains($value, Auth::scopes());
         }
@@ -356,7 +355,7 @@ class AuthenticateTest extends TestCase
         config(['keycloak.user_provider_custom_retrieve_method' => 'custom_retrieve']);
 
         Auth::extend('keycloak', function ($app, $name, array $config) {
-            return new KeycloakGuard(new CustomUserProvider(new BcryptHasher(), User::class), $app->request);
+            return new KeycloakGuard(new CustomUserProvider(new BcryptHasher, User::class), $app->request);
         });
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -370,7 +369,7 @@ class AuthenticateTest extends TestCase
         $this->buildCustomToken([
             'iat' => time() + 30,   // time ahead in the future
             'preferred_username' => 'johndoe',
-            'resource_access' => ['myapp-backend' => []]
+            'resource_access' => ['myapp-backend' => []],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -384,7 +383,7 @@ class AuthenticateTest extends TestCase
         $this->buildCustomToken([
             'iat' => time() + 30, // time ahead in the future
             'preferred_username' => 'johndoe',
-            'resource_access' => ['myapp-backend' => []]
+            'resource_access' => ['myapp-backend' => []],
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
@@ -393,9 +392,9 @@ class AuthenticateTest extends TestCase
 
     public function test_authenticates_with_custom_input_key()
     {
-        config(['keycloak.input_key' => "api_token"]);
+        config(['keycloak.input_key' => 'api_token']);
 
-        $this->json('GET', '/foo/secret?api_token=' . $this->token);
+        $this->json('GET', '/foo/secret?api_token='.$this->token);
 
         $this->assertEquals(Auth::id(), $this->user->id);
 
@@ -404,7 +403,7 @@ class AuthenticateTest extends TestCase
 
     public function test_authentication_prefers_bearer_token_over_with_custom_input_key()
     {
-        config(['keycloak.input_key' => "api_token"]);
+        config(['keycloak.input_key' => 'api_token']);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret?api_token=some-junk');
 
@@ -483,12 +482,12 @@ class AuthenticateTest extends TestCase
     {
         $this->prepareCredentials('ES256', [
             'private_key_type' => OPENSSL_KEYTYPE_EC,
-            'curve_name' => 'prime256v1'
+            'curve_name' => 'prime256v1',
         ]);
 
         config([
             'keycloak.token_encryption_algorithm' => 'ES256',
-            'keycloak.realm_public_key' => Token::plainPublicKey($this->publicKey)
+            'keycloak.realm_public_key' => Token::plainPublicKey($this->publicKey),
         ]);
 
         $this->withKeycloakToken()->json('GET', '/foo/secret');
