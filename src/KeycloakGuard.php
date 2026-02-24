@@ -13,9 +13,13 @@ use KeycloakGuard\Exceptions\UserNotFoundException;
 class KeycloakGuard implements Guard
 {
     protected $config;
+
     protected $user;
+
     protected $provider;
+
     protected $decodedToken;
+
     protected Request $request;
 
     public function __construct(UserProvider $provider, Request $request)
@@ -44,7 +48,7 @@ class KeycloakGuard implements Guard
 
         if ($this->decodedToken) {
             $this->validate([
-                $this->config['user_provider_credential'] => $this->decodedToken->{$this->config['token_principal_attribute']}
+                $this->config['user_provider_credential'] => $this->decodedToken->{$this->config['token_principal_attribute']},
             ]);
         }
     }
@@ -56,19 +60,19 @@ class KeycloakGuard implements Guard
      */
     public function getTokenForRequest()
     {
-        $inputKey = $this->config['input_key'] ?? "";
+        $inputKey = $this->config['input_key'] ?? '';
 
         return $this->request->bearerToken() ?? $this->request->input($inputKey);
     }
 
     /**
-       * Determine if the current user is authenticated.
-       *
-       * @return bool
-       */
+     * Determine if the current user is authenticated.
+     *
+     * @return bool
+     */
     public function check()
     {
-        return !is_null($this->user());
+        return ! is_null($this->user());
     }
 
     /**
@@ -78,7 +82,7 @@ class KeycloakGuard implements Guard
      */
     public function hasUser()
     {
-        return !is_null($this->user());
+        return ! is_null($this->user());
     }
 
     /**
@@ -88,13 +92,12 @@ class KeycloakGuard implements Guard
      */
     public function guest()
     {
-        return !$this->check();
+        return ! $this->check();
     }
 
-     /**
+    /**
      * Set the current user.
      *
-     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
      */
     public function setUser(Authenticatable $user)
@@ -132,7 +135,7 @@ class KeycloakGuard implements Guard
         }
     }
 
-     /**
+    /**
      * Returns full decoded JWT token from athenticated user
      *
      * @return mixed|null
@@ -145,7 +148,6 @@ class KeycloakGuard implements Guard
     /**
      * Validate a user's credentials.
      *
-     * @param  array  $credentials
      * @return bool
      */
     public function validate(array $credentials = [])
@@ -161,12 +163,12 @@ class KeycloakGuard implements Guard
                 $user = $this->provider->retrieveByCredentials($credentials);
             }
 
-            if (!$user) {
-                throw new UserNotFoundException("User not found. Credentials: ".json_encode($credentials));
+            if (! $user) {
+                throw new UserNotFoundException('User not found. Credentials: '.json_encode($credentials));
             }
         } else {
             $class = $this->provider->getModel();
-            $user = new $class();
+            $user = new $class;
         }
 
         $this->setUser($user);
@@ -185,26 +187,27 @@ class KeycloakGuard implements Guard
             return;
         }
 
-        $token_resource_access = array_keys((array)($this->decodedToken->resource_access ?? []));
+        $token_resource_access = array_keys((array) ($this->decodedToken->resource_access ?? []));
         $allowed_resources = explode(',', $this->config['allowed_resources']);
 
         if (count(array_intersect($token_resource_access, $allowed_resources)) == 0) {
-            throw new ResourceAccessNotAllowedException("The decoded JWT token does not have a valid `resource_access` permission allowed by the API. Allowed resources: " . $this->config['allowed_resources'] . ". Token resources: " . json_encode($token_resource_access));
+            throw new ResourceAccessNotAllowedException('The decoded JWT token does not have a valid `resource_access` permission allowed by the API. Allowed resources: '.$this->config['allowed_resources'].'. Token resources: '.json_encode($token_resource_access));
         }
     }
 
     /**
      * Check if authenticated user has a especific role into resource
-     * @param string $resource
-     * @param string $role
+     *
+     * @param  string  $resource
+     * @param  string  $role
      * @return bool
      */
     public function hasRole($resource, $role)
     {
-        $token_resource_access = (array)$this->decodedToken->resource_access;
+        $token_resource_access = (array) $this->decodedToken->resource_access;
 
         if (array_key_exists($resource, $token_resource_access)) {
-            $token_resource_values = (array)$token_resource_access[$resource];
+            $token_resource_values = (array) $token_resource_access[$resource];
 
             if (array_key_exists('roles', $token_resource_values) &&
               in_array($role, $token_resource_values['roles'])) {
@@ -214,19 +217,20 @@ class KeycloakGuard implements Guard
 
         return false;
     }
-    
+
     /**
      * Check if authenticated user has a any role into resource
-     * @param string $resource
-     * @param string $role
+     *
+     * @param  string  $resource
+     * @param  string  $role
      * @return bool
      */
     public function hasAnyRole($resource, array $roles)
     {
-        $token_resource_access = (array)$this->decodedToken->resource_access;
+        $token_resource_access = (array) $this->decodedToken->resource_access;
 
         if (array_key_exists($resource, $token_resource_access)) {
-            $token_resource_values = (array)$token_resource_access[$resource];
+            $token_resource_values = (array) $token_resource_access[$resource];
 
             if (array_key_exists('roles', $token_resource_values)) {
                 foreach ($roles as $role) {
@@ -242,7 +246,6 @@ class KeycloakGuard implements Guard
 
     /**
      * Get scope(s)
-     * @return array
      */
     public function scopes(): array
     {
@@ -257,8 +260,6 @@ class KeycloakGuard implements Guard
 
     /**
      * Check if authenticated user has a especific scope
-     * @param string $scope
-     * @return bool
      */
     public function hasScope(string $scope): bool
     {
@@ -273,8 +274,6 @@ class KeycloakGuard implements Guard
 
     /**
      * Check if authenticated user has a any scope
-     * @param array $scopes
-     * @return bool
      */
     public function hasAnyScope(array $scopes): bool
     {
