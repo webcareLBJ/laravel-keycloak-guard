@@ -1,6 +1,6 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "forkProcessing": "enabled", // Otherswise, Renovate will not run on this repository, because it is a fork.
+    "forkProcessing": "enabled",
     "extends": [
         "config:recommended",
         ":pinOnlyDevDependencies",
