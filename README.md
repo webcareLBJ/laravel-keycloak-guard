@@ -2,10 +2,8 @@
   <img src=".github/assets/bird.png">
 </p>
 <p align="center">
-&nbsp;
-        <img src="https://img.shields.io/packagist/v/robsontenorio/laravel-keycloak-guard.svg" />
-        <img src="https://img.shields.io/packagist/dt/robsontenorio/laravel-keycloak-guard.svg" />
-      <img src="https://codecov.io/gh/robsontenorio/laravel-keycloak-guard/branch/master/graph/badge.svg?token=8ZpDarpss1"/>
+    <img src="https://img.shields.io/packagist/v/pflege-de/laravel-keycloak-guard.svg" />
+    <img src="https://img.shields.io/packagist/dt/pflege-de/laravel-keycloak-guard.svg" />
 
 </p>
 
@@ -59,7 +57,7 @@ This package helps you authenticate users on a Laravel API based on JWT tokens g
 Require the package
 
 ```
-composer require robsontenorio/laravel-keycloak-guard
+composer require pflege-de/laravel-keycloak-guard
 ```
 
 **If you are using Lumen**, register the provider in your boostrap app file `bootstrap/app.php`.  
