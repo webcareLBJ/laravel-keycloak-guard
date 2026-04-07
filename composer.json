@@ -1,7 +1,7 @@
 {
     "name": "pflege-de/laravel-keycloak-guard",
     "description": "🔑 Simple Keycloak Guard for Laravel",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "keywords": [
         "laravel",
         "keycloak"
