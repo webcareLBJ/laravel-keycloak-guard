@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/webcareLBJ/laravel-keycloak-guard/compare/v2.0.0...v2.0.1) (2026-04-07)
+
+
+### Code Refactoring
+
+* Simplify return type hint in `user()` method ([#23](https://github.com/webcareLBJ/laravel-keycloak-guard/issues/23)) ([2b02df2](https://github.com/webcareLBJ/laravel-keycloak-guard/commit/2b02df2404977ab1b5827446b95cf9a501b5440f))
+
 ## [2.0.0](https://github.com/webcareLBJ/laravel-keycloak-guard/compare/v1.6.4...v2.0.0) (2026-02-24)
 
 
